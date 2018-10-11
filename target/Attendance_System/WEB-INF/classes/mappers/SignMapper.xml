@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.dao.SignMapper" >
+  <resultMap id="BaseResultMap" type="com.system.pojo.Sign" >
+    <constructor >
+      <idArg column="RECORD_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="DEPARTMENT_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="STAFF_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="SIGN_IN_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="SIGN_IN_STATE" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="SIGN_OUT_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="SIGN_OUT_STATE" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UPDATE_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    RECORD_ID, DEPARTMENT_ID, STAFF_ID, SIGN_IN_TIME, SIGN_IN_STATE, SIGN_OUT_TIME, SIGN_OUT_STATE, 
+    UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sign_record
+    where RECORD_ID = #{recordId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sign_record
+    where RECORD_ID = #{recordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.system.pojo.Sign" >
+    insert into sign_record (RECORD_ID, DEPARTMENT_ID, STAFF_ID, 
+      SIGN_IN_TIME, SIGN_IN_STATE, SIGN_OUT_TIME, 
+      SIGN_OUT_STATE, UPDATE_TIME)
+    values (#{recordId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{staffId,jdbcType=VARCHAR}, 
+      now(), #{signInState,jdbcType=VARCHAR}, #{signOutTime,jdbcType=TIMESTAMP},
+      #{signOutState,jdbcType=VARCHAR}, now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.pojo.Sign" >
+    insert into sign_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        RECORD_ID,
+      </if>
+      <if test="departmentId != null" >
+        DEPARTMENT_ID,
+      </if>
+      <if test="staffId != null" >
+        STAFF_ID,
+      </if>
+      <if test="signInTime != null" >
+        SIGN_IN_TIME,
+      </if>
+      <if test="signInState != null" >
+        SIGN_IN_STATE,
+      </if>
+      <if test="signOutTime != null" >
+        SIGN_OUT_TIME,
+      </if>
+      <if test="signOutState != null" >
+        SIGN_OUT_STATE,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null" >
+        #{staffId,jdbcType=VARCHAR},
+      </if>
+      <if test="signInTime != null" >
+        #{signInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signInState != null" >
+        #{signInState,jdbcType=VARCHAR},
+      </if>
+      <if test="signOutTime != null" >
+        #{signOutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signOutState != null" >
+        #{signOutState,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.pojo.Sign" >
+    update sign_record
+    <set >
+      <if test="departmentId != null" >
+        DEPARTMENT_ID = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null" >
+        STAFF_ID = #{staffId,jdbcType=VARCHAR},
+      </if>
+      <if test="signInTime != null" >
+        SIGN_IN_TIME = #{signInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signInState != null" >
+        SIGN_IN_STATE = #{signInState,jdbcType=VARCHAR},
+      </if>
+      <if test="signOutTime != null" >
+        SIGN_OUT_TIME = #{signOutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signOutState != null" >
+        SIGN_OUT_STATE = #{signOutState,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = now(),
+      </if>
+    </set>
+    where RECORD_ID = #{recordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.pojo.Sign" >
+    update sign_record
+    set DEPARTMENT_ID = #{departmentId,jdbcType=INTEGER},
+      STAFF_ID = #{staffId,jdbcType=VARCHAR},
+      SIGN_IN_TIME = #{signInTime,jdbcType=TIMESTAMP},
+      SIGN_IN_STATE = #{signInState,jdbcType=VARCHAR},
+      SIGN_OUT_TIME = #{signOutTime,jdbcType=TIMESTAMP},
+      SIGN_OUT_STATE = #{signOutState,jdbcType=VARCHAR},
+      UPDATE_TIME = now()
+    where RECORD_ID = #{recordId,jdbcType=INTEGER}
+  </update>
+
+  <select id="countById" resultType="java.lang.Integer">
+    select count(*) from sign_record where STAFF_ID = #{id}
+  </select>
+
+  <select id="findByPaging" parameterType="Map" resultMap="BaseResultMap">
+    select *
+    from sign_record
+    WHERE STAFF_ID = #{id}
+    order by SIGN_IN_TIME desc
+    limit #{toPageNo}, #{pageSize}
+  </select>
+
+  <select id="isSignIn" parameterType="Sign" resultType="java.lang.Integer">
+    select
+    count(*)
+    from sign_record
+    where STAFF_ID = #{staffId} and DATE(SIGN_IN_TIME) = curdate()
+  </select>
+
+  <update id="signOut" parameterType="Sign">
+    update sign_record
+    set SIGN_OUT_TIME = #{signOutTime,jdbcType=TIMESTAMP},
+      SIGN_OUT_STATE = #{signOutState,jdbcType=VARCHAR},
+      UPDATE_TIME = now()
+    where STAFF_ID = #{staffId,jdbcType=VARCHAR} and Date(SIGN_IN_TIME) = curdate()
+  </update>
+
+  <select id="showSignRecord" parameterType="Map" resultMap="BaseResultMap">
+    select *
+    from sign_record
+    WHERE DEPARTMENT_ID = #{departmentId} and DATE_FORMAT(SIGN_IN_TIME,"%Y-%m-%d") = #{querytime}
+    order by SIGN_IN_TIME desc
+    limit #{toPageNo}, #{pageSize}
+  </select>
+
+  <select id="departmentSignCount" parameterType="Map" resultType="java.lang.Integer">
+    select count(*) from sign_record
+    WHERE DEPARTMENT_ID = #{departmentId} and DATE_FORMAT(SIGN_IN_TIME,"%Y-%m-%d") = #{querytime}
+  </select>
+
+</mapper>

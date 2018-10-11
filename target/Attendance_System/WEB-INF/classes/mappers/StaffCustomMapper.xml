@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.system.dao.StaffCustomMapper" >
+
+    <!--一对多查询-->
+    <resultMap id="staffResultMap" type="StaffCustom">
+        <!--配置映射的订单信息
+            property 的值应跟 该vo 的变量名相同
+            column 的值，应与对应的数据库 表字段名相同
+        -->
+        <id column="STAFF_ID" property="staffId"/>
+        <result column="STAFF_NAME" property="staffName" />
+        <result column="SEX" property="sex" />
+        <result column="DEPARTMENT_ID" property="departmentId" />
+        <result column="ROLE" property="role" />
+        <result column="GRADE" property="grade" />
+        <result column="BIRTHDAY" property="birthday" />
+        <result column="TEL" property="tel" />
+        <result column="EMAIL" property="email" />
+        <result column="HOBBY" property="hobby" />
+        <result column="PASSWORD" property="password" />
+        <result column="DEPARTMENT_NAME" property="departmentName" />
+        <result column="ROLE_NAME" property="roleName" />
+
+        <!--collection 对关联查询到的多条记录映射到集合对象中
+            property： 将关联查询到的多条信息映射到 vo 哪个属性
+            ofType：映射到集合属性中 pojo 的类型
+        -->
+        <!--<collection property="selectedCourseList" ofType="SelectedCourseCustom">
+            <result column="courseID" property="courseid"/>
+            <result column="studentID" property="studentid"/>
+            <result column="mark" property="mark"/>
+            &lt;!&ndash;配置映射的关系的课程信息&ndash;&gt;
+            <association property="courseCustom" javaType="CourseCustom">
+                <id column="courseID" property="courseid"/>
+                <result column="courseName" property="coursename"/>
+                <result column="teacherID" property="teacherid"/>
+                <result column="courseTime" property="coursetime"/>
+                <result column="classRoom" property="classroom"/>
+                <result column="courseWeek" property="courseweek"/>
+                <result column="courseType" property="coursetype"/>
+                <result column="collegeID" property="collegeid"/>
+                <result column="score" property="score"/>
+            </association>
+        </collection>-->
+    </resultMap>
+
+    <!--<sql id="Base_Column_List" >
+    staff.*, department_code.DEPARTMENT_NAME, role.ROLE_NAME
+    </sql>-->
+
+    <select id="findByPaging" parameterType="PagingVO" resultMap="staffResultMap">
+        select staff.*, department_code.DEPARTMENT_NAME,role.ROLE_NAME
+        from staff, department_code,role
+        WHERE staff.DEPARTMENT_ID = department_code.DEPARTMENT_ID
+        and staff.ROLE = role.ROLE_ID
+        limit #{toPageNo}, #{pageSize}
+    </select>
+
+    <select id="getStaffCount" resultType="int" >
+        select count(1) from staff
+    </select>
+
+    <select id="findById" resultMap="staffResultMap" parameterType="java.lang.String" >
+        select staff.*, department_code.DEPARTMENT_NAME,role.ROLE_NAME
+        from staff,department_code,role
+        where staff.STAFF_ID = #{id}
+        and staff.DEPARTMENT_ID = department_code.DEPARTMENT_ID
+        and staff.ROLE = role.ROLE_ID
+    </select>
+
+    <update id="editStaff" parameterType="Map">
+        update staff
+        set ROLE = #{role},
+        DEPARTMENT_ID = #{department}
+        where STAFF_ID = #{staffId}
+    </update>
+
+    <select id="findByName" parameterType="String" resultMap="staffResultMap">
+        select staff.*, department_code.DEPARTMENT_NAME,role.ROLE_NAME
+        from staff, department_code,role
+        WHERE staff.STAFF_NAME = #{findByName}
+        and staff.DEPARTMENT_ID = department_code.DEPARTMENT_ID
+        and staff.ROLE = role.ROLE_ID
+    </select>
+
+    <delete id="removeById" parameterType="String" >
+    delete from staff
+    where STAFF_ID = #{id}
+  </delete>
+
+    <select id="selectByPrimaryKey" resultMap="staffResultMap" parameterType="java.lang.String" >
+        select staff.*
+        from staff
+        where STAFF_ID = #{staffId,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="StaffCustom" >
+    insert into staff (STAFF_ID, STAFF_NAME, SEX,
+      DEPARTMENT_ID, ROLE, GRADE,
+      BIRTHDAY, TEL, PASSWORD)
+    values (#{staffId,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
+      #{departmentId,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}, #{grade,jdbcType=DATE},
+      #{birthday,jdbcType=DATE}, #{tel,jdbcType=VARCHAR}, 123)
+  </insert>
+</mapper>
