@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.dao.ReportInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.system.pojo.ReportInfo" >
+    <constructor >
+      <idArg column="REPORT_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="CREATE_DATE" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="DEPARTMENT_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="DEPARTMENT_NAME" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="DAY_LATE_COUNT" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="DAY_EARLY_COUNT" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="MONTH_LATE_COUNT" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="MONTH_EARLY_COUNT" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="YEAR_LATE_COUNT" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="YEAR_EARLY_COUNT" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    REPORT_ID, CREATE_DATE, DEPARTMENT_ID, DEPARTMENT_NAME, DAY_LATE_COUNT, DAY_EARLY_COUNT, 
+    MONTH_LATE_COUNT, MONTH_EARLY_COUNT, YEAR_LATE_COUNT, YEAR_EARLY_COUNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_info
+    where REPORT_ID = #{reportId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_info
+    where REPORT_ID = #{reportId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.system.pojo.ReportInfo" >
+    insert into report_info (REPORT_ID, CREATE_DATE, DEPARTMENT_ID, 
+      DEPARTMENT_NAME, DAY_LATE_COUNT, DAY_EARLY_COUNT, 
+      MONTH_LATE_COUNT, MONTH_EARLY_COUNT, YEAR_LATE_COUNT, 
+      YEAR_EARLY_COUNT)
+    values (#{reportId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{departmentId,jdbcType=INTEGER}, 
+      #{departmentName,jdbcType=VARCHAR}, #{dayLateCount,jdbcType=INTEGER}, #{dayEarlyCount,jdbcType=INTEGER}, 
+      #{monthLateCount,jdbcType=INTEGER}, #{monthEarlyCount,jdbcType=INTEGER}, #{yearLateCount,jdbcType=INTEGER}, 
+      #{yearEarlyCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.system.pojo.ReportInfo" >
+    insert into report_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reportId != null" >
+        REPORT_ID,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="departmentId != null" >
+        DEPARTMENT_ID,
+      </if>
+      <if test="departmentName != null" >
+        DEPARTMENT_NAME,
+      </if>
+      <if test="dayLateCount != null" >
+        DAY_LATE_COUNT,
+      </if>
+      <if test="dayEarlyCount != null" >
+        DAY_EARLY_COUNT,
+      </if>
+      <if test="monthLateCount != null" >
+        MONTH_LATE_COUNT,
+      </if>
+      <if test="monthEarlyCount != null" >
+        MONTH_EARLY_COUNT,
+      </if>
+      <if test="yearLateCount != null" >
+        YEAR_LATE_COUNT,
+      </if>
+      <if test="yearEarlyCount != null" >
+        YEAR_EARLY_COUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reportId != null" >
+        #{reportId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentName != null" >
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="dayLateCount != null" >
+        #{dayLateCount,jdbcType=INTEGER},
+      </if>
+      <if test="dayEarlyCount != null" >
+        #{dayEarlyCount,jdbcType=INTEGER},
+      </if>
+      <if test="monthLateCount != null" >
+        #{monthLateCount,jdbcType=INTEGER},
+      </if>
+      <if test="monthEarlyCount != null" >
+        #{monthEarlyCount,jdbcType=INTEGER},
+      </if>
+      <if test="yearLateCount != null" >
+        #{yearLateCount,jdbcType=INTEGER},
+      </if>
+      <if test="yearEarlyCount != null" >
+        #{yearEarlyCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.system.pojo.ReportInfo" >
+    update report_info
+    <set >
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentId != null" >
+        DEPARTMENT_ID = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentName != null" >
+        DEPARTMENT_NAME = #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="dayLateCount != null" >
+        DAY_LATE_COUNT = #{dayLateCount,jdbcType=INTEGER},
+      </if>
+      <if test="dayEarlyCount != null" >
+        DAY_EARLY_COUNT = #{dayEarlyCount,jdbcType=INTEGER},
+      </if>
+      <if test="monthLateCount != null" >
+        MONTH_LATE_COUNT = #{monthLateCount,jdbcType=INTEGER},
+      </if>
+      <if test="monthEarlyCount != null" >
+        MONTH_EARLY_COUNT = #{monthEarlyCount,jdbcType=INTEGER},
+      </if>
+      <if test="yearLateCount != null" >
+        YEAR_LATE_COUNT = #{yearLateCount,jdbcType=INTEGER},
+      </if>
+      <if test="yearEarlyCount != null" >
+        YEAR_EARLY_COUNT = #{yearEarlyCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where REPORT_ID = #{reportId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.system.pojo.ReportInfo" >
+    update report_info
+    set CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      DEPARTMENT_ID = #{departmentId,jdbcType=INTEGER},
+      DEPARTMENT_NAME = #{departmentName,jdbcType=VARCHAR},
+      DAY_LATE_COUNT = #{dayLateCount,jdbcType=INTEGER},
+      DAY_EARLY_COUNT = #{dayEarlyCount,jdbcType=INTEGER},
+      MONTH_LATE_COUNT = #{monthLateCount,jdbcType=INTEGER},
+      MONTH_EARLY_COUNT = #{monthEarlyCount,jdbcType=INTEGER},
+      YEAR_LATE_COUNT = #{yearLateCount,jdbcType=INTEGER},
+      YEAR_EARLY_COUNT = #{yearEarlyCount,jdbcType=INTEGER}
+    where REPORT_ID = #{reportId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectReportInfoDataAll" resultMap="BaseResultMap" parameterType = "java.util.Map">
+
+    select * from report_info
+    where CREATE_DATE = #{createDate,jdbcType=VARCHAR}
+
+  </select>
+
+  <select id="selectReportInfoData" resultMap="BaseResultMap" parameterType = "java.util.Map">
+
+    select * from report_info
+    where CREATE_DATE = #{createDate}
+    and DEPARTMENT_ID = #{departmentId}
+
+  </select>
+
+  <select id="executeReportProc" parameterType="java.util.Map" statementType="CALLABLE">
+	{call attendance_system.SIGN_REPORT_PROC(
+		#{reportDate,jdbcType=VARCHAR,mode=IN},
+		#{departmentId,jdbcType=VARCHAR,mode=IN})
+	}
+  </select>
+</mapper>
